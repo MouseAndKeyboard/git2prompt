@@ -2,6 +2,10 @@
 
 This project is a **C++23** re-implementation of the [git2gpt](https://github.com/chand1012/git2gpt) tool, which converts a Git repository into text (or JSON) suitable for ChatGPT or other LLM prompts. It supports `.gptignore` to filter out unwanted files, optionally merges `.gitignore` rules, scrubs comments to save tokens, and can estimate the approximate token count.
 
+#  Download
+https://github.com/MouseAndKeyboard/git2prompt/releases
+
+
 ## Features
 
 - **Fast** parallel file reading and processing, using C++17/20 parallel algorithms.
