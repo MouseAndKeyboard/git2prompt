@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(git2prompt-cpp LANGUAGES CXX)
+project(git2prompt LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -92,8 +92,8 @@ endif()
 # ----------------------------------------------------------------------------
 # Build the CLI executable
 # ----------------------------------------------------------------------------
-add_executable(git2prompt-cpp "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
-target_link_libraries(git2prompt-cpp PRIVATE git2prompt-lib)
+add_executable(git2prompt "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
+target_link_libraries(git2prompt PRIVATE git2prompt-lib)
 
 # ----------------------------------------------------------------------------
 # Tests

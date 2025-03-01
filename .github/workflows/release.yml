@@ -1,0 +1,107 @@
+name: Release
+
+on:
+  # Trigger only when pushing a tag (e.g., 'v1.0.0')
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-and-release:
+    name: Build on Linux, macOS, Windows
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Set up CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Configure with CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release .
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Archive build artifacts
+        run: |
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            mv build/git2prompt.exe git2prompt-windows.exe
+          elif [ "${{ matrix.os }}" = "macos-latest" ]; then
+            mv build/git2prompt git2prompt-macos
+          else
+            mv build/git2prompt git2prompt-linux
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.os }}-binary
+          path: |
+            git2prompt-windows.exe
+            git2prompt-macos
+            git2prompt-linux
+          if-no-files-found: ignore
+
+  publish:
+    name: Publish Release
+    runs-on: ubuntu-latest
+    needs: build-and-release
+    steps:
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ubuntu-latest-binary
+          path: .
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: macos-latest-binary
+          path: .
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: windows-latest-binary
+          path: .
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: "Release ${{ github.ref_name }}"
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Linux Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./git2prompt-linux
+          asset_name: git2prompt-linux
+          asset_content_type: application/octet-stream
+        if: runner.os == 'Linux'
+
+      - name: Upload macOS Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./git2prompt-macos
+          asset_name: git2prompt-macos
+          asset_content_type: application/octet-stream
+        if: runner.os == 'Linux'
+
+      - name: Upload Windows Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./git2prompt-windows.exe
+          asset_name: git2prompt-windows.exe
+          asset_content_type: application/octet-stream
+        if: runner.os == 'Linux'
