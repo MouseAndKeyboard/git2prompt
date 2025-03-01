@@ -1,0 +1,42 @@
+# Typical CMake/Build artifacts
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.cmake
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*.user
+*.obj
+
+# OS-specific junk
+.DS_Store
+Thumbs.db
+.sass-cache
+*.DS_Store
+
+# Compiled object files, libraries, executables
+*.o
+*.obj
+*.so
+*.dylib
+*.dll
+*.lib
+*.a
+*.exe
+*.out
+*.app
+
+# Test output / coverage
+Testing/
+*.gcno
+*.gcda
+*.gcov
+
+# Other
+*.log

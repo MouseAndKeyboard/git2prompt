@@ -1,0 +1,36 @@
+name: C++ CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        build-type: [Release, Debug]
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+
+      - name: Set up CMake
+        uses: lukka/run-vcpkg@v11
+        with:
+          # vcpkg is optional if you want it, or you can simply rely on system compilers/libraries.
+          # For demonstration, we'll just rely on default system compilers:
+          runInstall: false
+
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} .
+
+      - name: Build
+        run: cmake --build build --config ${{ matrix.build-type }} --parallel
+
+      - name: Test
+        run: |
+          cd build
+          ctest --output-on-failure --config ${{ matrix.build-type }}

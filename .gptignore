@@ -1,0 +1,28 @@
+# Ignore the .git directory and meta-files
+.git/
+.gitignore
+.gptignore
+
+# Exclude build artifacts (to avoid including large compiled outputs in the AI prompt)
+build/
+CMakeFiles/
+CMakeCache.txt  
+cmake_install.cmake
+Makefile
+*.cmake
+
+# Exclude CI config (usually not necessary in the prompt)
+.github/
+
+# Exclude typical junk or large irrelevant files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# If your repo includes huge test datasets or external archives,
+# you can add them here, e.g.:
+# large_dataset/
+# archives/*.zip
