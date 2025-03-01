@@ -32,7 +32,7 @@ jobs:
         shell: bash
         run: |
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            mv build/git2prompt.exe git2prompt-windows.exe
+            mv build/Release/git2prompt.exe git2prompt-windows.exe
           elif [ "${{ matrix.os }}" = "macos-latest" ]; then
             mv build/git2prompt git2prompt-macos
           else
