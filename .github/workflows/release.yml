@@ -28,6 +28,8 @@ jobs:
         run: cmake --build build --config Release --parallel
 
       - name: Archive build artifacts
+        # Force bash for multi-OS if-elif-else
+        shell: bash
         run: |
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
             mv build/git2prompt.exe git2prompt-windows.exe
