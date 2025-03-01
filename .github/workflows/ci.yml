@@ -11,19 +11,22 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        build-type: [Release, Debug]
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        build-type: [ Release, Debug ]
+
     steps:
       - name: Checkout source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Configure
-        run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} .
+        run: |
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
 
       - name: Build
-        run: cmake --build build --config ${{ matrix.build-type }} --parallel
+        run: |
+          cmake --build build --parallel
 
       - name: Test
         run: |
           cd build
-          ctest --output-on-failure --config ${{ matrix.build-type }}
+          ctest --output-on-failure

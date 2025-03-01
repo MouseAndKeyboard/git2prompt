@@ -98,4 +98,4 @@ After building, the executable **git2prompt** is located in `build/` (or your ch
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for details.
+See [LICENSE](LICENSE) for details.
