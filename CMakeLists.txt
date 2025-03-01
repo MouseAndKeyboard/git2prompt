@@ -46,16 +46,6 @@ if(USE_SIMDJSON)
 endif()
 
 # ----------------------------------------------------------------------------
-# gitignorecpp for robust .gitignore parsing
-# ----------------------------------------------------------------------------
-FetchContent_Declare(
-  gitignorecpp
-  GIT_REPOSITORY https://github.com/eth-p/gitignorecpp.git
-  GIT_TAG        v0.2.3
-)
-FetchContent_MakeAvailable(gitignorecpp)
-
-# ----------------------------------------------------------------------------
 # GoogleTest (for tests, if enabled)
 # ----------------------------------------------------------------------------
 if(BUILD_TESTS)
@@ -88,7 +78,6 @@ target_link_libraries(git2prompt-lib
     PUBLIC
         CLI11::CLI11
         spdlog::spdlog
-        gitignorecpp
 )
 
 if(USE_SIMDJSON)
