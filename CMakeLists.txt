@@ -8,8 +8,12 @@ option(BUILD_TESTS "Build tests" ON)
 option(USE_SIMDJSON "Use simdjson for JSON output" ON)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
-    add_compile_options(-O3 -march=native -flto)
+  if(NOT WIN32)  # or use something like if(UNIX)
+    add_compile_options(-flto)
+  endif()
+  add_compile_options(-O3 -march=native)
 endif()
+
 
 include(FetchContent)
 
