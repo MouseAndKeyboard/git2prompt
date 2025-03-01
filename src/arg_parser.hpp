@@ -15,6 +15,9 @@ struct Arguments {
     bool scrub_comments{false};
     bool verbose{false};
     std::string gptignore_file;
+
+    // NEW: If true, read file paths from STDIN instead of scanning the repo
+    bool stdin_file_list{false};
 };
 
 inline std::optional<Arguments> parse_arguments(CLI::App& app, int argc, char** argv) {
@@ -31,14 +34,17 @@ inline std::optional<Arguments> parse_arguments(CLI::App& app, int argc, char** 
     app.add_flag("-s,--scrub-comments", args.scrub_comments, "Scrub comments from the output");
     app.add_flag("-v,--verbose", args.verbose, "Enable verbose logging");
 
-    // Positional: repository path
+    // NEW FLAG for reading file paths from STDIN
+    app.add_flag("--stdin-file-list", args.stdin_file_list,
+                 "Read filenames from STDIN instead of scanning the entire repo.");
+
+    // Positional: repository path (still required)
     app.add_option("repo_path", args.repo_path, "Path to the Git repository")->required();
 
     // Parse
     try {
         app.parse(argc, argv);
     } catch(const CLI::ParseError &e) {
-        // Return code from parse
         int ret = app.exit(e);
         if(ret != 0) {
             return std::nullopt;

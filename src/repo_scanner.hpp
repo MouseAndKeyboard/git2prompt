@@ -34,3 +34,11 @@ std::vector<std::string> build_ignore_patterns(const std::string& repo_path,
  * @return ScanResult
  */
 ScanResult scan_repository(const std::string& repo_path, const std::vector<std::string>& ignore_patterns);
+
+/**
+ * @brief Glob-like check if a given path matches a given ignore pattern (e.g. *.log, dir/**, etc.)
+ * @param text The path (relative or absolute) to check
+ * @param pattern The pattern (supports * and **)
+ * @return true if matches, false otherwise
+ */
+bool matches_pattern(const std::string& text, const std::string& pattern);
